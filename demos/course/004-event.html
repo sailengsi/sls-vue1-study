@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="赛冷思,liumh1011@163.com"> 
+        <meta http-equiv="Pragma" content="no-cache">
+        <!-- 强制让文档与设备的宽度保持1：1 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <!-- 删除默认的苹果工具栏和菜单栏 -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <!-- 在web app应用下状态条（屏幕顶部条）的颜色 -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <!-- 禁止了把数字转化为拨号链接 -->
+        <meta name="format-detection" content="telephone=no">
+        <title>事件相关</title>
+        <style>
+            .parents{
+                width:200px;
+                height: 100px;
+                background: #ccc;
+                margin-bottom: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <!-- 因为没有阻止冒泡，所以点击里面的按钮时，会同时触发父元素的事件 -->
+            <div class="parents" v-on:click="testClickParent">
+                <button v-on:click='testClickChild'>点击按钮</button>
+            </div>
+
+            <!-- 
+                两种阻止冒泡方式：
+                    1，给父元素事件调用self,
+                    2，或者给子元素事件调用stop都可。 
+            -->
+            <div class="parents" @click.self="testClickParent2">
+                <button @click='testClickChild2'>通过给父元素事件调用self阻止冒泡</button>
+            </div>
+            <div class="parents" @click="testClickParent3">
+                <button @click.stop='testClickChild3'>通过给子元素事件调用stop阻止冒泡</button>
+            </div>
+
+            <button @click='testClickChildParam("param",$event)'>给事件传参数</button>
+
+
+            <input type="text" @keyup="testKeyup"><br>            
+            <input type="text" @keyup.enter="testKeyupEnter" value="enter"><br>          
+            <input type="text" @keyup.tab="testKeyupTab" value="tab"><br>          
+            <input type="text" @keyup.delete="testKeyupDelete" value="delete"><br>          
+            <input type="text" @keyup.esc="testKeyupEsc" value="esc"><br>          
+            <input type="text" @keyup.space="testKeyupSpace" value="space"><br>          
+            <input type="text" @keyup.up="testKeyupUp" value="up"><br>          
+            <input type="text" @keyup.down="testKeyupDown" value="down"><br>          
+            <input type="text" @keyup.left="testKeyupLeft" value="left"><br>          
+            <input type="text" @keyup.right="testKeyupRight" value="right"><br>         
+            <input type="text" @keyup.ff7="f7" value="f7"><br>         
+        </div>
+        <script src="../../node_modules/vue/dist/vue.js"></script>
+        <script>
+            Vue.directive('on').keyCodes.ff7 = 118;
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    name:'sailengsi'
+                },
+                methods:{
+                    f7:function(){
+                        console.log('f7');
+                    },
+                    testClickChild:function(eve){
+                        console.log('child1')
+                    },
+                    testClickParent:function(){
+                        console.log("parents1");
+                    },
+
+                    testClickChild2:function(eve){
+                        console.log('child2')
+                    },
+                    testClickParent2:function(){
+                        console.log("parents2");
+                    },
+
+                    testClickChild3:function(eve){
+                        console.log('child3')
+                    },
+                    testClickParent3:function(){
+                        console.log("parents3");
+                    },
+
+                    testClickChildParam:function(msg,event){
+                        console.log(msg);
+                        console.log(event);
+                    },
+
+
+                    testKeyup:function(e){
+                        console.log(e.keyCode);
+                    },
+                    testKeyupEnter:function(){
+                        console.log("enter");
+                    },
+                    testKeyupTab:function(){
+                        console.log("tab");
+                    },
+                    testKeyupDelete:function(){
+                        console.log("Delete");
+                    },
+                    testKeyupEsc:function(){
+                        console.log("Esc");
+                    },
+                    testKeyupSpace:function(){
+                        console.log("Space");
+                    },
+                    testKeyupUp:function(){
+                        console.log("Up");
+                    },
+                    testKeyupDown:function(){
+                        console.log("Down");
+                    },
+                    testKeyupLeft:function(){
+                        console.log("Left");
+                    },
+                    testKeyupRight:function(){
+                        console.log("Right");
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

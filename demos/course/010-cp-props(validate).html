@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="赛冷思,liumh1011@163.com"> 
+        <meta http-equiv="Pragma" content="no-cache">
+        <!-- 强制让文档与设备的宽度保持1：1 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <!-- 删除默认的苹果工具栏和菜单栏 -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <!-- 在web app应用下状态条（屏幕顶部条）的颜色 -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <!-- 禁止了把数字转化为拨号链接 -->
+        <meta name="format-detection" content="telephone=no">
+        <title>组件验证</title>
+        <style>
+            input{
+                display: block;
+                width:600px;
+                clear: both;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <parent></parent>
+        </div>
+        <template id="parent">
+            <h1>这是父组件。。。</h1>
+            <!-- 
+                给子组件定义的属性，要么是单词，要么是以中横线隔开
+                如果是中横线隔开，在子组件中使用时必须改用驼峰写法
+            -->
+            <child :parent-msg='parentInfo' :parent-one='parentNumberOne'></child>
+        </template>
+        <template id="child">
+            <h2>这是子组件。</h2>
+            <p>parentMsg：{{parentMsg}}</p>
+            <p>parentOne：{{parentOne}}</p>
+        </template>
+        <script src="../../node_modules/vue/dist/vue.js"></script>
+        <script>
+            Vue.component('parent',{
+                data:function(){
+                    return {
+                        parentInfo:'这是在父组件中定义的。',
+                        //子组件中对这个属性进行了验证必须是数字
+                        //如果这里设置成字符串，则在开发版中抛出一条警告
+                        parentNumberOne:100
+                    }
+                },
+                template:'#parent',
+                components:{
+                    child:{
+                        props:{
+                            parentMsg:String,
+                            parentOne:{
+                                type:Number,
+                            }
+                        },
+                        template:'#child'
+                    }
+                }
+            });
+
+            //创建根实例
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    
+                },
+                methods:{}
+            });
+        </script>
+    </body>
+</html>

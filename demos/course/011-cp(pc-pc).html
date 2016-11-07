@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="赛冷思,liumh1011@163.com"> 
+        <meta http-equiv="Pragma" content="no-cache">
+        <!-- 强制让文档与设备的宽度保持1：1 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <!-- 删除默认的苹果工具栏和菜单栏 -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <!-- 在web app应用下状态条（屏幕顶部条）的颜色 -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <!-- 禁止了把数字转化为拨号链接 -->
+        <meta name="format-detection" content="telephone=no">
+        <title>父子组件通信</title>
+        <style>
+            input{
+                display: block;
+                width:600px;
+                clear: both;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <one></one>
+        </div>
+
+        <!-- 1组件 -->
+        <template id="cp-1">
+            <h1>这是1组件。。。</h1>
+            <button @click='getChildsMsg'>获取所有子组件信息</button>
+            <button @click='getChildsLength'>获取所有子组件个数</button>
+            <one-one></one-one>
+            <one-two></one-two>
+        </template>
+
+        <!-- 1-1组件 -->
+        <template id="cp1-1">
+            <h2>这是1-1组件。</h2>
+            <button @click='getParentsMsg'>获取所有父组件信息</button>
+            <button @click='getChildsMsg'>获取所有子组件信息</button>
+            <one-one-one></one-one-one>
+        </template>
+        <!-- 1-1-1组件 -->
+        <template id="cp1-1-1">
+            <h2>这是1-1-1组件。</h2>
+            <button @click='getRootMsg'>获取根实例信息</button>
+            <button @click='getParentsMsg'>获取所有父组件信息</button>
+        </template>
+
+        <!-- 1-2组件 -->
+        <template id="cp1-2">
+            <h2>这是1-2组件。</h2>
+            <button @click='getParentsMsg'>获取所有父组件信息</button>
+            <button @click='getChildsMsg'>获取所有子组件信息</button>
+        </template>
+        <script src="../../node_modules/vue/dist/vue.js"></script>
+        <script>
+            // 1组件
+            Vue.component('one',{
+                template:'#cp-1',
+                data:function(){
+                    return {
+                        msg:'这是在1组件中定义的msg。'
+                    }
+                },
+                methods:{
+                    getChildsMsg:function(){
+                        console.log("cur："+this.msg);
+                        console.log("1-1："+this.$children[0].msg);
+                        console.log("1-1-1："+this.$children[0].$children[0].msg);
+                        console.log("1-2："+this.$children[1].msg);
+                    },
+                    getChildsLength:function(){
+                        console.log("childsLength："+this.$children.length);
+                    }
+                },
+                components:{
+                    //1-1组件
+                    oneOne:{
+                        template:'#cp1-1',
+                        data:function(){
+                            return {
+                                msg:'这是在1-1组件中定义的msg。'
+                            }
+                        },
+                        methods:{
+                            getParentsMsg:function(){
+                                console.log("1："+this.$parent.msg);
+                            },
+                            getChildsMsg:function(){
+                                console.log("1-1-1："+this.$children[0].msg);
+                            }
+                        },
+                        components:{
+                            //1-1-1组件
+                            oneOneOne:{
+                                template:'#cp1-1-1',
+                                data:function(){
+                                    return {
+                                        msg:'这是在1-1-1组件中定义的msg。'
+                                    }
+                                },
+                                methods:{
+                                    getRootMsg:function(){
+                                        console.log("root："+this.$root.msg);
+                                    },
+                                    getParentsMsg:function(){
+                                        console.log("1-1："+this.$parent.msg);
+                                        console.log("1："+this.$parent.$parent.msg);
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    //1-2组件
+                    oneTwo:{
+                        template:'#cp1-2',
+                        data:function(){
+                            return {
+                                msg:'这是在1-2组件中定义的msg。'
+                            }
+                        },
+                        methods:{
+                            getParentsMsg:function(){
+                                console.log("1："+this.$parent.msg);
+                            },
+                            getChildsMsg:function(){
+                                console.log("1-2-1："+this.$children[0]);
+                            }
+                        },
+                    }
+                }
+            });
+
+            //创建根实例
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    msg:'实例中定义的msg'
+                },
+                methods:{}
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="赛冷思,liumh1011@163.com"> 
+        <meta http-equiv="Pragma" content="no-cache">
+        <!-- 强制让文档与设备的宽度保持1：1 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <!-- 删除默认的苹果工具栏和菜单栏 -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <!-- 在web app应用下状态条（屏幕顶部条）的颜色 -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <!-- 禁止了把数字转化为拨号链接 -->
+        <meta name="format-detection" content="telephone=no">
+        <title>使用v-on绑定自定义事件</title>
+        <style>
+            input{
+                display: block;
+                width:600px;
+                clear: both;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <h1>使用v-on绑定时，当返回true时，不会向上冒泡，而是会冒泡到默认接收方法中?</h1>
+            <one></one>
+        </div>
+
+        <!-- 1组件 -->
+        <template id="cp-1">
+            <h2>这是1组件。。。</h2>
+            <!-- 
+                方法名不能包含中横线
+                此方法在父组件中需定义在methods对象中
+            -->
+            <one-two v-on:1-2-msg='getDispatchChildMsg'></one-two>
+        </template>
+       
+        <!-- 1-2组件 -->
+        <template id="cp1-2">
+            <h3>这是1-2组件。</h3>
+            <button @click='setDispatch'>向上派发消息，冒泡一层就停止</button>
+        </template>
+        <script src="../../node_modules/vue/dist/vue.js"></script>
+        <script>
+            // 1组件
+            Vue.component('one',{
+                template:'#cp-1',
+                data:function(){
+                    return {
+                        msg:'这是在1组件中定义的msg。'
+                    }
+                },
+                methods:{
+                    //通过v-on接收子组件派发的消息
+                    //当返回true时，不会向上冒泡，而是会冒泡到events中
+                    'getDispatchChildMsg':function(data){
+                        console.log('1组件中使用v-on接收1-2派发的消息：'+data.msg);
+                        return true;
+                    }
+                },
+                events:{
+                    //当使用v-on接收时，这里就不起作用了。
+                    //但是当methods中的接收方法返回true时，又会执行到这里
+                    '1-2-msg':function(data){
+                        console.log('1组件中接收1-2派发的消息：'+data.msg);
+                        return true;
+                    }
+                },
+                components:{
+                    //1-2组件
+                    oneTwo:{
+                        template:'#cp1-2',
+                        data:function(){
+                            return {
+                                data:{
+                                    msg:'这是在1-2组件中定义的msg。'
+                                }
+                            }
+                        },
+                        methods:{
+                            setDispatch:function(){
+                                this.$dispatch('1-2-msg',this.data);
+                            }
+                        },
+
+                    }
+                }
+            });
+
+            //创建根实例
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    msg:'实例中定义的msg'
+                },
+                methods:{
+                    getDispatchChildMsg:function(data){
+                        console.log('根实例中通过v-on接收1-2派发的消息：'+data.msg);
+                    }
+                },
+                events:{
+                    /*'1-2-msg':function(data){
+                        console.log('根实例中接收1-2派发的消息：'+data.msg);
+                    }*/
+                }
+            });
+        </script>
+    </body>
+</html>

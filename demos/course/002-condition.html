@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="赛冷思,liumh1011@163.com"> 
+        <meta http-equiv="Pragma" content="no-cache">
+        <!-- 强制让文档与设备的宽度保持1：1 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <!-- 删除默认的苹果工具栏和菜单栏 -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <!-- 在web app应用下状态条（屏幕顶部条）的颜色 -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <!-- 禁止了把数字转化为拨号链接 -->
+        <meta name="format-detection" content="telephone=no">
+        <title>条件渲染</title>
+        <style>
+            input{
+                width:400px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <p v-if="canSee">这是v-if="canSee"，canSee为true才显示</p>
+            <p v-else>这是v-else="canSee"，canSee为false才显示</p>
+            <template v-if="canSee">
+                <p>这是template的v-if="canSee"</p>
+            </template>
+            <p>canSee:{{canSee}}</p>
+            <button v-on:click="toggleCanSee">切换 canSee</button>
+        </div>
+
+        <script src="../../node_modules/vue/dist/vue.js"></script>
+        <script>
+            var app = new Vue({
+                el: "#app",
+                data: {
+                    canSee: true
+                },
+                methods:{
+                    toggleCanSee:function(){
+                        this.canSee=!this.canSee;
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="赛冷思,liumh1011@163.com"> 
+        <meta http-equiv="Pragma" content="no-cache">
+        <!-- 强制让文档与设备的宽度保持1：1 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <!-- 删除默认的苹果工具栏和菜单栏 -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <!-- 在web app应用下状态条（屏幕顶部条）的颜色 -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <!-- 禁止了把数字转化为拨号链接 -->
+        <meta name="format-detection" content="telephone=no">
+        <title>使用slot分发内容之具名slot</title>
+        <style>
+            input{
+                display: block;
+                width:600px;
+                clear: both;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <h2>组件内slot中的内容，显示与否取决于调用该组件时，是否在组件标签中还有其他内容。</h2>
+            <one>
+                <p>这是one组件标签中的内容，所以one组件中的slot不会显示。</p>
+                <p slot="before">slot before 内容。</p>
+                <p slot="after">slot after 内容。</p>
+            </one>
+        </div>
+
+        <!-- 1组件 -->
+        <template id="cp-1">
+            <slot name="before"></slot>
+            <slot>这是one组件中slot内容，因为one标签中没有内容，所以这里会显示。</slot>
+            <slot name="after"></slot>
+        </template>
+        <script src="../../node_modules/vue/dist/vue.js"></script>
+        <script>
+            // 1组件
+            Vue.component('one',{
+                template:'#cp-1'
+            });
+
+            //创建根实例
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    msg:'实例中定义的msg'
+                }
+            });
+        </script>
+    </body>
+</html>

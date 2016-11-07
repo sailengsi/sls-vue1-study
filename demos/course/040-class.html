@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'/>
+        <meta name="author" content="赛冷思,liumh1011@163.com"> 
+        <meta http-equiv="Pragma" content="no-cache">
+        <!-- 强制让文档与设备的宽度保持1：1 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <!-- 删除默认的苹果工具栏和菜单栏 -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <!-- 在web app应用下状态条（屏幕顶部条）的颜色 -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <!-- 禁止了把数字转化为拨号链接 -->
+        <meta name="format-detection" content="telephone=no">
+        <title>class</title>
+        <style>
+            .bg-red{
+                background: red;
+            }
+            .bg-blue{
+                background: blue;
+            }
+
+            .font-red{
+                color: red;
+            }
+            .font-blue{
+                color: blue;
+            }
+        </style>
+    </head>
+    <body>
+        <h2></h2>
+        <div id="app">
+            <h2>class的使用</h2>
+            <p class='p' v-bind:class='{"bg-red":data.bgRed,"bg-blue":data.bgBlue}'>通过对象直接量</p>
+            <button @click='setRed'>设置背景为红色</button>
+            <button @click='setBlue'>设置背景为蓝色</button>
+            <button @click='setClear'>清空背景色</button>
+            <p class='p' v-bind:class='data.classObj'>通过传入对象方式</p>
+            <button @click='setFontRed'>设置字体为红色</button>
+            <button @click='setFontBlue'>设置字体为蓝色</button>
+            <button @click='setFontClear'>清空字体色</button>
+            <p class='p' v-bind:class='["a","b","c"]'>通过传入数组方式</p>
+            <p class='p' v-bind:class='"a"=="a" ? "aa" :""'>通过三元运算符判断方式</p>
+            <p class='p' v-bind:class='["a"=="a" ? "aa" :""]'>数组中通过三元运算符判断方式</p>
+            <p class='p' v-bind:class='["a","b",{"c":true,"d":false}]'>数组中嵌套数组方式</p>
+        </div>
+        <script src="../../node_modules/vue/dist/vue.js"></script>
+        <script>
+           
+            //创建根实例
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    data:{
+                        bgRed:false,
+                        bgBlue:false,
+                        classObj:{
+                            'font-red':false,
+                            'font-blue':false,
+                        }
+                    }
+                },
+                methods:{
+                    setRed:function(){
+                        this.data.bgRed=true;
+                        this.data.bgBlue=false;
+                    },
+                    setBlue:function(){
+                        this.data.bgRed=false;
+                        this.data.bgBlue=true;
+                    },
+                    setClear:function(){
+                        this.data.bgRed=false;
+                        this.data.bgBlue=false;
+                    },
+
+                    setFontRed:function(){
+                        this.data.classObj['font-red']=true;
+                        this.data.classObj['font-blue']=false;
+                    },
+                    setFontBlue:function(){
+                        this.data.classObj['font-red']=false;
+                        this.data.classObj['font-blue']=true;
+                    },
+                    setFontClear:function(){
+                        this.data.classObj['font-red']=false;
+                        this.data.classObj['font-blue']=false;
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

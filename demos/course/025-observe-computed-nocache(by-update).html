@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="赛冷思,liumh1011@163.com"> 
+        <meta http-equiv="Pragma" content="no-cache">
+        <!-- 强制让文档与设备的宽度保持1：1 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <!-- 删除默认的苹果工具栏和菜单栏 -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <!-- 在web app应用下状态条（屏幕顶部条）的颜色 -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <!-- 禁止了把数字转化为拨号链接 -->
+        <meta name="format-detection" content="telephone=no">
+        <title>深入响应式原理-计算属性-computed通过更新数据去掉缓存</title>
+    </head>
+    <body>
+        <h2>事实证明：只有设置了缓存并且更新了数据，才会重新计算，否则读取的一直是缓存。</h2>
+        <div id="app">
+            <button @click='updateData'>更新数据</button>
+            <p>{{data.msg}}</p>
+        </div>
+        <script src="../../node_modules/vue/dist/vue.js"></script>
+        <script>
+
+            //创建根实例
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    data:{
+                       msg:'这是普通信息!'
+                    }
+                },
+                methods:{
+                    updateData:function(){
+                        console.log("下面是比较连续获取两次的结果");
+                        var get1=this.getTime;
+                        var get2=this.getTime;
+                        console.log('设置了缓存，没有更新数据',get1===get2);
+
+                        var get3=this.getTime;
+                        this.data.msg='new value1';
+                        var get4=this.getTime;
+                        console.log('设置了缓存，更新了数据',get3===get4);
+
+
+                        var get11=this.getDate
+                        var get22=this.getDate;
+                        console.log('没有设置缓存，没有更新数据',get11===get22);
+
+                        var get33=this.getDate;
+                        this.data.msg='new value111';
+                        var get44=this.getDate;
+                        console.log('没有设置缓存，更新了数据',get33===get44);
+                    }
+                },
+                computed:{
+                    getTime: {
+                        cache: false,
+                        get: function () {
+                            return new Date().getTime();
+                        }
+                    },
+                    getDate:function(){
+                        return new Date().getTime();
+                    }
+                }
+            });
+
+            
+        </script>
+    </body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="赛冷思,liumh1011@163.com"> 
+        <meta http-equiv="Pragma" content="no-cache">
+        <!-- 强制让文档与设备的宽度保持1：1 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <!-- 删除默认的苹果工具栏和菜单栏 -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <!-- 在web app应用下状态条（屏幕顶部条）的颜色 -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <!-- 禁止了把数字转化为拨号链接 -->
+        <meta name="format-detection" content="telephone=no">
+        <title>组件-动态切换-缓存非活动的组件</title>
+        <style>
+            input{
+                display: block;
+                width:600px;
+                clear: both;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <button @click='toggleComponent("home")'>首页</button>
+            <button @click='toggleComponent("list")'>列表</button>
+            <button @click='toggleComponent("view")'>详情</button>
+            <br>
+            <component :is='currentView' keep-alive></component>
+        </div>
+        <template id='home'>
+            这是首页内容
+        </template>
+        <template id='list'>
+            这是list内容
+        </template>
+        <template id='view'>
+            这是详情内容
+        </template>
+        <script src="../../node_modules/vue/dist/vue.js"></script>
+        <script>
+            //创建根实例
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    msg:'实例中定义的msg',
+                    currentView:'home'
+                },
+                methods:{
+                    toggleComponent:function(componentName){
+                        this.currentView=componentName;
+                    }
+                },
+                components:{
+                    home:{
+                         template:'#home'
+                    },
+                    list:{
+                         template:'#list'
+                    },
+                    view:{
+                         template:'#view'
+                    },
+                }
+            });
+        </script>
+    </body>
+</html>

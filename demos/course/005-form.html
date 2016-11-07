@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="赛冷思,liumh1011@163.com"> 
+        <meta http-equiv="Pragma" content="no-cache">
+        <!-- 强制让文档与设备的宽度保持1：1 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <!-- 删除默认的苹果工具栏和菜单栏 -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <!-- 在web app应用下状态条（屏幕顶部条）的颜色 -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <!-- 禁止了把数字转化为拨号链接 -->
+        <meta name="format-detection" content="telephone=no">
+        <title>表单操作</title>
+        <style>
+            .parents{
+                width:200px;
+                height: 200px;
+                background: #ccc;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <div class="form-group">
+                <label for="input">input</label>
+                <input type="text" v-model='input'>
+                <span>value:{{input}}</span>
+            </div>
+            <div class="form-group">
+                <label for="input">input-lazy</label>
+                <input type="text" v-model='inputLazy' lazy>
+                <span>value:{{inputLazy}}</span>
+            </div>
+            <div class="form-group">
+                <label for="textarea">textarea</label>
+                <textarea id="textarea" v-model='textarea'></textarea>
+                <span>value:{{textarea}}</span>
+            </div>
+            <div class="form-group">
+                <label for="checkbox">checkbox</label>
+                <input type="checkbox" id='checkbox' v-model='checked'>
+                <span>value:{{checked}}</span>
+            </div>
+            <div class="form-group">
+                <label for="sai" >sai</label>
+                <input type="checkbox" id='sai' v-model='checkedArr' value='sai'>
+                <label for="leng" >leng</label>
+                <input type="checkbox" id='leng' v-model='checkedArr' value='leng'>
+                <label for="si" >si</label>
+                <input type="checkbox" id='si' v-model='checkedArr' value='si'>
+
+                <span>value:{{checkedArr}}</span><----->
+                <span>valueJson:{{checkedArr | json}}</span>
+            </div>
+            <div class="form-group">
+                <label for="one">one</label>
+                <input type='radio' value='one' v-model='radio'>
+                <label for="two">two</label>
+                <input type='radio' value='two' v-model='radio'>
+                <span>value:{{radio}}</span>
+            </div>
+            <div class="form-group">
+                <select v-model="selectedValue">
+                    <option value="0">请选择</option>
+                    <option value="1">A</option>
+                    <option value="2">B</option>
+                    <option value="3">C</option>
+                    <option value="4">D</option>
+                </select>
+                <span>value(通过option的value值匹配):{{selectedValue}}</span>
+            </div>
+            <div class="form-group">
+                <select v-model="selected">
+                    <option>请选择</option>
+                    <option>A</option>
+                    <option>B</option>
+                    <option>C</option>
+                    <option>D</option>
+                </select>
+                <span>value(通过option标签中的内容匹配):{{selected}}</span>
+            </div>
+            <div class="form-group">
+                <select v-model="selectedMultiple" multiple>
+                    <option value='1'>A</option>
+                    <option value='2'>B</option>
+                    <option value='3'>C</option>
+                    <option value='4'>D</option>
+                </select>
+                <span>value:{{selectedMultiple}}</span><----->
+                <span>valueJson:{{selectedMultiple | json}}</span>
+            </div>
+        </div>
+        <script src="../../node_modules/vue/dist/vue.js"></script>
+        <script>
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    input:'this is input',
+                    inputLazy:'这个不会进行双向绑定。',
+                    textarea:'this is textara',
+                    checked:true,
+                    checkedArr:['sai','si'],
+                    radio:'one',
+                    selectedValue:'3',
+                    selected:'C',
+                    selectedMultiple:['1','3']
+                },
+                methods:{
+
+                }
+            });
+        </script>
+    </body>
+</html>

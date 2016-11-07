@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="赛冷思,liumh1011@163.com"> 
+        <meta http-equiv="Pragma" content="no-cache">
+        <!-- 强制让文档与设备的宽度保持1：1 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <!-- 删除默认的苹果工具栏和菜单栏 -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <!-- 在web app应用下状态条（屏幕顶部条）的颜色 -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <!-- 禁止了把数字转化为拨号链接 -->
+        <meta name="format-detection" content="telephone=no">
+        <title>深入响应式原理-计算属性-computed通过cache为false去掉缓存</title>
+    </head>
+    <body>
+        <h2></h2>
+        <div id="app">
+            <p>{{data.msg}}</p>
+        </div>
+        <script src="../../node_modules/vue/dist/vue.js"></script>
+        <script>
+
+            //创建根实例
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    data:{
+                       msg:'这是普通信息!'
+                    }
+                },
+                computed:{
+                    getTime: {
+                        cache: false,
+                        get: function () {
+                            return new Date().getTime();
+                        }
+                    }
+                }
+            });
+
+            var get1=app.getTime;
+            var get2=app.getTime;
+            console.log(get1);
+            console.log(get2);
+            console.log(get1===get2);
+        </script>
+    </body>
+</html>

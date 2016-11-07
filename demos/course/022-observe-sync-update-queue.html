@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="赛冷思,liumh1011@163.com"> 
+        <meta http-equiv="Pragma" content="no-cache">
+        <!-- 强制让文档与设备的宽度保持1：1 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <!-- 删除默认的苹果工具栏和菜单栏 -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <!-- 在web app应用下状态条（屏幕顶部条）的颜色 -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <!-- 禁止了把数字转化为拨号链接 -->
+        <meta name="format-detection" content="telephone=no">
+        <title>深入响应式原理-异步更新队列</title>
+        <style>
+            
+        </style>
+    </head>
+    <body>
+        <h2>坑：虽然官方中说在nextTick回调中比较返回true，但是需要用正则匹配把两边空格去掉才可。</h2>
+        <div id="app">
+            <p>{{data.msg}}</p>
+        </div>
+        <script src="../../node_modules/vue/dist/vue.js"></script>
+        <script>
+
+            //创建根实例
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    data:{
+                       msg:'this is msg!'
+                    }
+                }
+            });
+
+            app.data.msg='new msg value';
+
+            var firstContent=app.$el.textContent.replace(/^(\s|\u00A0)+|(\s|\u00A0)+$/g,'');
+            var textContent=firstContent==='new msg value.';
+            console.log(textContent);//false
+
+            Vue.nextTick(function () {
+                var lastContent=app.$el.textContent.replace(/^(\s|\u00A0)+|(\s|\u00A0)+$/g,'');
+                var nextTickValue=lastContent === 'new msg value';
+                console.log(nextTickValue);//true
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="赛冷思,liumh1011@163.com"> 
+        <meta http-equiv="Pragma" content="no-cache">
+        <!-- 强制让文档与设备的宽度保持1：1 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <!-- 删除默认的苹果工具栏和菜单栏 -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <!-- 在web app应用下状态条（屏幕顶部条）的颜色 -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <!-- 禁止了把数字转化为拨号链接 -->
+        <meta name="format-detection" content="telephone=no">
+        <title>hello word</title>
+        <style>
+            input{
+                width:400px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+        	<p>{{message}}</p>
+            <p v-html="html"></p>
+            <p v-text="text"></p>
+            <div>
+                <div>
+                    插值表达式：<input type="text" v-model="message">
+                </div>
+                <div>
+                    v-html方式：<input type="text" v-model="html">
+                </div>
+                <div>
+                    v-text方式：<input type="text" v-model="text">
+                </div>
+            </div>
+        </div>
+
+        <script src="../../node_modules/vue/dist/vue.js"></script>
+        <script>
+            var app = new Vue({
+                el: "#app",
+                data: {
+                    message: "hello,word,<b>{{}}</b>通过双括号绑定!",
+                    html: "通过<b>v-html</b>方式绑定,html标签在渲染的时候被解析了。",
+                    text: "通过<b>v-text</b>方式绑定,html标签在渲染的时候被源码输出了。",
+                }
+            });
+        </script>
+    </body>
+</html>

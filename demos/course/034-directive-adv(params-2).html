@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'/>
+        <meta name="author" content="赛冷思,liumh1011@163.com"> 
+        <meta http-equiv="Pragma" content="no-cache">
+        <!-- 强制让文档与设备的宽度保持1：1 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <!-- 删除默认的苹果工具栏和菜单栏 -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <!-- 在web app应用下状态条（屏幕顶部条）的颜色 -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <!-- 禁止了把数字转化为拨号链接 -->
+        <meta name="format-detection" content="telephone=no">
+        <title>自定义指令-高级部分-params-动态控制params</title>
+    </head>
+    <body>
+        <h2></h2>
+        <div id="app">
+            <h2>元素指令操作,高级部分-params-动态控制params</h2>
+            <p v-test v-bind:a='data.a'>指令高级部分params-动态控制params</p>
+            <button @click='updateParamsValue'>改变绑定到指令上params的值</button>
+        </div>
+        <script src="../../node_modules/vue/dist/vue.js"></script>
+        <script>
+            Vue.directive('test', {
+                params:['a'],
+                paramWatchers: {
+                    a: function (val, oldVal) {
+                      console.log('新值：'+val);
+                      console.log('旧值：'+oldVal);
+                    }
+                },
+                bind: function () {
+                    console.log(this.params);
+                }
+            });
+
+            //创建根实例
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    data:{
+                        a:'first a.'
+                    }
+                },
+                methods:{
+                    updateParamsValue:function(){
+                        this.data.a='last a';
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'/>
+        <meta name="author" content="赛冷思,liumh1011@163.com"> 
+        <meta http-equiv="Pragma" content="no-cache">
+        <!-- 强制让文档与设备的宽度保持1：1 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <!-- 删除默认的苹果工具栏和菜单栏 -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <!-- 在web app应用下状态条（屏幕顶部条）的颜色 -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <!-- 禁止了把数字转化为拨号链接 -->
+        <meta name="format-detection" content="telephone=no">
+        <title>自定义过滤器</title>
+        <style>
+            .filter-container{
+                margin-bottom: 14px;
+                border: 1px solid red;
+            }
+        </style>
+    </head>
+    <body>
+        <h2></h2>
+        <div id="app">
+            <h2>自定义过滤器</h2>
+            <div class='filter-container'>
+                <h4>reverse-翻转字符串</h4>
+                <p v-text='data.reverse | reverse'></p>
+                <button @click='updateReverse'>更新测试翻转</button>
+            </div>
+
+            <div class='filter-container'>
+                <h4>substring-翻转字符串</h4>
+                <p v-text='data.trimstr | trim'></p>
+                <button @click='updateTrimstr'>更新测试去除字符串空格</button>
+            </div>
+        </div>
+        <script src="../../node_modules/vue/dist/vue.js"></script>
+        <script>
+
+            Vue.filter('reverse',function(value){
+                if (typeof value!='object') {
+                    console.log(this);
+                    return value.split('').reverse().join('');
+                }
+            });
+
+            Vue.filter('trim',function(value){
+                if (typeof value!='object') {
+                    return value.replace(/^(\s|\u00A0)+|(\s|\u00A0)+$/g,'');
+                }
+            });
+           
+            //创建根实例
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    data:{
+                        reverse:'helloword',
+                        trimstr:' 去除左右空格的值 ',
+                    }
+                },
+                methods:{
+                    updateReverse:function(){
+                        this.data.reverse='new msg';
+                    },
+                    updateTrimstr:function(){
+                        this.data.trimstr='  新去除左右空格的值  ';
+                    },
+                }
+            });
+        </script>
+    </body>
+</html>

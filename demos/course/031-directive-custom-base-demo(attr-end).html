@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'/>
+        <meta name="author" content="赛冷思,liumh1011@163.com"> 
+        <meta http-equiv="Pragma" content="no-cache">
+        <!-- 强制让文档与设备的宽度保持1：1 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <!-- 删除默认的苹果工具栏和菜单栏 -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <!-- 在web app应用下状态条（屏幕顶部条）的颜色 -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <!-- 禁止了把数字转化为拨号链接 -->
+        <meta name="format-detection" content="telephone=no">
+        <title>自定义指令-基础部分-最终版的attr封装(包括data)</title>
+    </head>
+    <body>
+        <h2></h2>
+        <div id="app">
+            <h2>attr指令操作</h2>
+
+            <p v-attr="{name:data.attr.name,age:data.attr.age}">通过对象直接量传值</p>
+            <p v-attr="data.attr">通过对象变量传值(必须json序列化，否则不能进行双向绑定)</p>
+            <p v-attr.name="data.attr.name" v-attr.age="data.attr.age">通过指令.属性传值</p>
+            <p v-attr.name.name2='data.attr.name'>通过指令.属性1.属性2方式传值，会把值传给两个属性</p>
+
+            <button @click='updateAttr'>更新属性</button>
+
+            <br>
+            <br>
+            <h2>attr:data指令操作</h2>
+           
+           <p v-attr:data="{name:data.dataAttr.name,age:data.dataAttr.age}">通过对象直接量给attr:data指令传值</p>
+           <p v-attr:data="data.dataAttr">通过对象变量给attr:data指令传值(必须json序列化，否则不能进行双向绑定)</p>
+           <p v-attr:data.name="data.dataAttr.name" v-attr:data.age="data.dataAttr.age">通过attr:data指令.属性给指令传值</p>
+           <p v-attr:data.name.name2="data.dataAttr.name">通过attr:data指令.属性1.属性2给指令传值，会把值传给两个属性</p>
+           
+           <button @click='updateDataAttr'>更新data属性</button>
+        </div>
+        <script src="../../node_modules/vue/dist/vue.js"></script>
+        <script>
+
+            Vue.directive('attr', {
+                deep:true,//如果此属性不存在，那么直接给指令绑定对象，当对象属性改变时，却无法同步指令
+                bind: function () {},
+                update: function (value) {
+                    var arg=this.arg || '',//指令类型(v-attr:data.xxxx.yy)data就是arg。
+                        modifiers=this.modifiers,//参数(v-attr:data.xxxx.yyy)modifiers就是{xxx:true,yyy:true}。
+                        prefix=arg==='data' ? arg+'-' : '',//前缀，如果指令类型是data,前缀就是'data-'。
+                        flag=true;//默认传的是对象，或者是序列化的对象,如果传的是单个的值，此值便为false。
+                    
+                    //必须有值才可操作
+                    //如果不是对象，或者不是序列化后的对象，那就是单个的值，将flag设为false
+                    if (value) {
+                        if (typeof value==='object') {
+                            var value=value;
+                        }else{
+                            flag=false;
+                        }
+
+                        //设置单个的值
+                        if (flag===false) {
+                            for(var k in modifiers){
+                                this.el.setAttribute(prefix+''+k,value);
+                            }
+                        }
+
+                        //批量设置
+                        if (flag===true) {
+                            for(var k in value){
+                                this.el.setAttribute(prefix+''+k,value[k]);
+                            }
+                        }
+                    }
+                    
+                }
+            });
+
+            //创建根实例
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    data:{
+                        attr:{
+                            name:'sailengsi',
+                            age:20,
+                        },
+                        dataAttr:{
+                            name:'silence',
+                            age:30,
+                        }
+                    }
+                },
+                methods:{
+                    updateAttr:function(){
+                        this.data.attr.name='silence';
+                        this.data.attr.age='30';
+                    },
+                    updateDataAttr:function(){
+                        this.data.dataAttr.name='sailengsi';
+                        this.data.dataAttr.age='20';
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>
