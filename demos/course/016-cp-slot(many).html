@@ -23,25 +23,40 @@
     </head>
     <body>
         <div id="app">
-            <h2>组件内slot中的内容，显示与否取决于调用该组件时，是否在组件标签中还有其他内容。</h2>
-            <one>
-                <p>这是one组件标签中的内容，所以one组件中的slot不会显示。</p>
-                <p slot="before">slot before 内容。</p>
-                <p slot="after">slot after 内容。</p>
-            </one>
+            <h1>下面第一种调用方式，不传入自定义内容</h1>
+            <child></child>
+
+
+            <hr>
+            <hr>
+            <hr>
+            <h1>下面第二种调用方式，传入自定义内容</h1>
+            <child>
+                <h1 slot='header'>自定义标题</h1>
+                <p slot='footer'>自定义底部</p>
+                <p>自定义main</p>
+            </child>
         </div>
 
         <!-- 1组件 -->
-        <template id="cp-1">
-            <slot name="before"></slot>
-            <slot>这是one组件中slot内容，因为one标签中没有内容，所以这里会显示。</slot>
-            <slot name="after"></slot>
+        <template id="child">
+            <div class="container">
+                <header>
+                    <slot name="header"><h1>默认header</h1></slot>
+                </header>
+                <main>
+                    <slot><p>默认main</p></slot>
+                </main>
+                <footer>
+                    <slot name="footer"><p>默认footer</p></slot>
+                </footer>
+            </div>
         </template>
         <script src="../../node_modules/vue/dist/vue.js"></script>
         <script>
             // 1组件
-            Vue.component('one',{
-                template:'#cp-1'
+            Vue.component('child',{
+                template:'#child'
             });
 
             //创建根实例

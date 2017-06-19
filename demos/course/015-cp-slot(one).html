@@ -23,33 +23,37 @@
     </head>
     <body>
         <div id="app">
-            <h2>组件内slot中的内容，显示与否取决于调用该组件时，是否在组件标签中还有其他内容。</h2>
-            <one>
-                <p>这是one组件标签中的内容，所以one组件中的slot不会显示。</p>
-            </one>
-            <two></two>
+            <h1>下面第一种调用方式，不传入自定义内容</h1>
+            <child></child>
+            
+            <hr>
+            <hr>
+            <hr>
+            <h1>下面第二种调用方式，传入自定义内容</h1>
+            <child>
+                <p>这是我自定义的内容，覆盖子组件slot中的内容</p>
+            </child>
+
         </div>
 
         <!-- 1组件 -->
-        <template id="cp-1">
-            <slot>这是one组件中slot内容，因为one标签中有内容，所以这里不会显示。</slot>
+        <template id="child">
+            <div>
+                <h2>我是子组件的标题</h2>
+                <slot>
+                    <p>当父组件调用我时，没有传自定义内容时，我就会显示了，如果传了自定义内容，我就不显示了。</p>
+                </slot>
+            </div>
         </template>
 
-         <!-- 2组件 -->
-        <template id="cp-2">
-            <slot>这是two组件中slot内容，因为two标签中没有内容，所以这里会显示。</slot>
-        </template>
+      
         <script src="../../node_modules/vue/dist/vue.js"></script>
         <script>
             // 1组件
-            Vue.component('one',{
-                template:'#cp-1'
+            Vue.component('child',{
+                template:'#child'
             });
 
-            // 2组件
-            Vue.component('two',{
-                template:'#cp-2'
-            });
 
             //创建根实例
             var app = new Vue({
